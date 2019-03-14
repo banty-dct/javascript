@@ -1,0 +1,50 @@
+<html>
+<head>
+    <title>Guess Game Refactor</title>
+</head>
+<body>
+
+    <script>
+        const name = prompt("Enter your name");
+        console.log("Welcome to the Guess Game " + name);
+
+        const targetNumber = Math.ceil(Math.random() * 100);
+        console.log(targetNumber);
+
+        const maxGuess = 10;
+        let count = 0;
+        let guessNumber;
+        let minRange = 0, maxRange = 100;
+
+        for (let playerGuess = 0; playerGuess <= maxGuess; playerGuess++) {
+            if (playerGuess == maxGuess) {
+                console.log("Sorry. You didn't get my number. My number was " + targetNumber);
+                break;
+            } else {
+                guessNumber = Number(prompt("Guess my number"));
+                if (guessNumber === targetNumber) {
+                    console.log("Good Job, " + name + "!. You guessed my number in " + (playerGuess + 1) + " guesses!");
+                    break;
+                } else {
+                    if (guessNumber > targetNumber) {
+                        if (maxRange == 100) {
+                            maxRange = guessNumber;
+                        }
+                        if (guessNumber < maxRange) {
+                            maxRange = guessNumber;
+                        }
+                    } else if (guessNumber < targetNumber) {
+                        if (minRange == 0) {
+                            minRange = guessNumber;
+                        }
+                        if (guessNumber > minRange) {
+                            minRange = guessNumber;
+                        }
+                    }
+                    console.log((++count) + " : Find the number between " + minRange + " and " + maxRange);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

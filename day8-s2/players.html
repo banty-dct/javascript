@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dream 11 - Local Storage</title>
+        <style>
+            input{
+                padding: 10px 20px;
+            }
+            th,td{
+                padding: 15px;
+                border: 1px solid #a0a0a0;
+            }
+            table{
+                border: 1px solid #a0a0a0;
+                margin: 10px 0 0 0;
+            }
+            a{
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Listing Players - <span id="count"></span></h1>
+        <input type="text" placeholder="search player" id="search">
+        <table cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>State</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="list">
+                
+            </tbody>
+        </table>
+
+        <h2>Add Player</h2>
+        <form id="nameForm">
+            <label>
+                Name
+                <input type="text" autofocus name="playerName" id="playerName">
+                <span id="nameError"></span>
+            </label><br><br>
+            <label>
+                State
+                <input type="text" name="playerState" id="playerState">
+                <span id="stateError"></span>
+            </label><br><br>
+            <input type="submit" value="Add">
+        </form>
+
+        <script>
+            let players
+            //to check if key exists
+            if(localStorage.getItem('players')){
+                //take the current value and assign it to playes as the data is stored as JSON we are parsing
+                players = JSON.parse(localStorage.getItem('players'))
+            }else{
+                //if the key is not there we are setting a default [] array
+                localStorage.setItem('players',JSON.stringify([]))
+                //we are parsing that [] once agin
+                //can also be achieved with players = []
+                players = JSON.parse(localStorage.getItem('players'))
+            }
+
+            const listHandle = document.getElementById("list")
+            const countHandle = document.getElementById("count")
+            const searchHandle = document.getElementById("search")
+
+            const nameFormHandle = document.getElementById("nameForm")
+
+            const playerNameHandle = document.getElementById("playerName")
+            const nameErrorHandle = document.getElementById("nameError")
+
+            const playerStateHandle = document.getElementById("playerState")
+            const stateErrorHandle = document.getElementById("stateError")
+
+            // const deleteHandle = document.getElementsByClassName('remove')
+
+            function removeUser(e){
+                const index = players.findIndex(function(player){
+                    return player.id == e
+                })
+                players.splice(index,1)
+                localStorage.setItem('players',JSON.stringify(players))
+                buildList(players)
+            }
+
+            //show data
+            function buildList(players){
+                countHandle.innerHTML = players.length
+                let output = ''
+                let count = 1                
+                players.forEach(function(player){                    
+                    output += `<tr><td>${count}</td><td>${player.name}</td><td>${player.state}</td><td><button onclick="removeUser(${player.id})">Delete</button></td></tr>` 
+                    count++
+                })
+
+                listHandle.innerHTML = output
+            }     
+            buildList(players)
+
+            //search data
+            searchHandle.addEventListener("keyup",function(){
+                const result = players.filter(function(player){
+                    return player.name.toLowerCase().includes(searchHandle.value.toLowerCase()) || player.state.toLowerCase().includes(searchHandle.value.toLowerCase())
+                })
+                listHandle.innerHTML = ''
+                buildList(result)
+            })
+
+            //add data
+            nameFormHandle.addEventListener("submit",function(e){
+                e.preventDefault()
+
+                const name = playerNameHandle.value
+                const state = playerStateHandle.value
+
+                nameErrorHandle.innerHTML = ""
+                stateErrorHandle.innerHTML = ""
+
+                if(name.length == 0){
+                    nameErrorHandle.innerHTML = "Name can not be blank"
+                }else if(state.length == 0){
+                    stateErrorHandle.innerHTML = "State can not be blank"
+                }else{
+                    const obj = {}
+                    obj.id = Number(new Date()) + Math.round(Math.random()*100)
+                    obj.name = name
+                    obj.state = state
+                    players.push(obj)
+
+                    localStorage.setItem('players',JSON.stringify(players))
+                    buildList(players)
+
+                    nameErrorHandle.innerHTML = ""
+                    stateErrorHandle.innerHTML = ""
+
+                    nameFormHandle.reset()
+                }
+            })
+         
+        </script>
+    </body>
+</html>

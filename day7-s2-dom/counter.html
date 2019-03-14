@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Counter</title>
+    </head>
+    <body>
+        <h1 id="count">0</h1>
+
+        <button id="upBtn">UP</button>
+        <button id="downBtn">DOWN</button>
+        <button id="resetBtn">RESET</button>
+
+        <script>
+        
+            let countValue = 0;
+            const countHandle = document.getElementById("count")
+
+            const upBtnHandle = document.getElementById("upBtn")
+            const downBtnHandle = document.getElementById("downBtn")
+            const resetBtnHandle = document.getElementById("resetBtn")
+
+            upBtn.addEventListener("click",function(){
+                countValue++
+                countHandle.innerHTML = countValue
+                downBtn.removeAttribute("disabled");
+            })
+            downBtn.addEventListener("click",function(){
+                if(countValue > 0){
+                    countValue--
+                    countHandle.innerHTML = countValue
+                    downBtn.removeAttribute("disabled");
+                }else{
+                    downBtn.setAttribute("disabled", "");
+                }
+            })
+            resetBtn.addEventListener("click",function(){
+                countValue = 0
+                countHandle.innerHTML = countValue                
+                downBtn.removeAttribute("disabled");
+            })
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dream 11</title>
+    </head>
+    <body>
+        <h1>Listing Players - <span id="count"></span></h1>
+        <input type="text" placeholder="search player" id="search">
+        <ul id="list"></ul>
+
+        <script>
+            const players = ['sachin','dhoni','virat','rahul','saurav','jadeja','yuvraj','kumble','zaheer','srinath','ashwin']
+            const listHandle = document.getElementById("list")
+            const countHandle = document.getElementById("count")
+            const searchHandle = document.getElementById("search")
+
+            function buildList(players){
+                countHandle.innerHTML = players.length
+                players.sort().forEach(function(player){
+                    const li = document.createElement('li')
+                    li.textContent = player
+                    listHandle.appendChild(li)
+                })
+            }     
+            buildList(players)
+
+            searchHandle.addEventListener("keyup",function(){
+                const result = players.filter(function(player){
+                    return player.toLowerCase().includes(searchHandle.value.toLowerCase())
+                })
+                listHandle.innerHTML = ''
+                buildList(result)
+            })
+        </script>
+    </body>
+</html>

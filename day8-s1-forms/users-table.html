@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>List Users</title>
+        <style>
+            th,td{
+                padding: 15px;
+                border: 1px solid black;
+            }
+            table{
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>List Users</h1>
+        <table cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="list">
+                
+            </tbody>
+        </table>
+
+        <script>
+            const listHandle = document.getElementById("list")
+            const xhr = new XMLHttpRequest()
+            const url = 'http://jsonplaceholder.typicode.com/users'
+            //Http methods - GET(Read) POST(Create) PUT(Update) DELETE(Destroy)
+            xhr.open("GET",url)
+            xhr.send()
+            xhr.onload = function(){
+                //json type is string - inside can be object
+                const users = JSON.parse(xhr.responseText)
+                let output = ''
+                users.forEach(function(user){                    
+                    output += `<tr><td>${user.id}</td><td>${user.name}</td><td>${user.username}</td><td>${user.email}</td></tr>` 
+                })
+                listHandle.innerHTML = output
+            }
+            xhr.onerror = function(){
+                listHandle.innerHTML = `<tr><td colspan="4">Error</td></tr>` 
+            }
+        </script>
+    </body>
+</html>

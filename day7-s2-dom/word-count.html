@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Word Count</title>
+    </head>
+    <body>
+        <h1>Word Count</h1>
+        <textarea id="content"></textarea>
+        <p>You have written <span id="word">0</span> words and <span id="char">0</span> characters.</p>
+
+        <script>
+            const contentHandle = document.getElementById("content")
+            const wordHandle = document.getElementById("word")
+            const charHandle = document.getElementById("char")
+
+            contentHandle.addEventListener("keyup",function(){
+                if(contentHandle.value != ''){
+                    var array = contentHandle.value.split(" ");
+                    if(array[array.length - 1] == ''){
+                        wordHandle.innerHTML = array.length - 1
+                    }else{
+                        wordHandle.innerHTML = array.length
+                    }
+                    charHandle.innerHTML = contentHandle.value.length
+                }else{
+                    wordHandle.innerHTML = 0
+                    charHandle.innerHTML = 0
+                }
+            })
+        </script>
+    </body>
+</html>
